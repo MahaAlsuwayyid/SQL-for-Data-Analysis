@@ -1,0 +1,70 @@
+/*Query 1- Query used for First insight- (Question 3 of Set 1)*/
+
+SELECT Customer.FirstName, Customer.LastName, Customer.CustomerId , SUM (InvoiceLine.UnitPrice) AS UnitPrice
+FROM invoice
+JOIN InvoiceLine
+ON invoice.InvoiceId=InvoiceLine.InvoiceId
+JOIN Customer
+ON Customer.CustomerId=Invoice.CustomerId
+GROUP By Customer.CustomerId
+ORDER BY MAX (Invoice.Total) DESC
+LIMIT 5
+
+
+——
+
+/*Query 2- Query used for First insight*/
+
+SELECT DISTINCT Customer.Email , Customer.FirstName, Customer.LastName, genre.Name, SUM (invoice.total) as AmountSpent
+FROM Customer
+JOIN Invoice
+ON Customer.CustomerId=Invoice.CustomerId
+JOIN InvoiceLine
+ON invoice.InvoiceId=InvoiceLine.InvoiceId
+Join Track
+ON Track.TrackId=InvoiceLine.TrackId
+JOIN Genre
+ON Genre.GenreId=Track.GenreId
+WHERE Genre.Name LIKE "Rock"
+GROUP BY  Customer.Email
+ORDER BY  SUM (invoice.total) DESC
+LIMIT 5
+
+—-
+
+/*Query 3- Query used for First insight- (Question 2 of Set 2)*/
+
+SELECT  DISTINCT Artist.ArtistId,  Artist.Name,  COUNT (Genre.Name) AS Songs
+FROM Genre
+JOIN Track
+ON Genre.GenreId=Track.GenreId
+JOIN Album
+ON Album.AlbumId=Track.AlbumId
+Join Artist
+ON Artist.ArtistId=Album.ArtistId
+WHERE Genre.Name= "Rock"
+Group BY   Artist.ArtistId,  Artist.Name
+ORDER BY COUNT (Genre.Name) DESC,   Artist.Name
+LIMIT 10
+
+—-
+
+/*Query 4- Query used for First insight- (Question 3 of Set 2)*/
+
+SELECT Artist.name, sum(InvoiceLine.Quantity*InvoiceLine.UnitPrice) as Amountspent , Customer.CustomerId, Customer.FirstName, Customer.LastName
+FROM Customer
+JOIN invoice
+ON Customer.CustomerId=Invoice.CustomerId
+JOIN Invoiceline
+ON Invoice.InvoiceId=InvoiceLine.InvoiceId
+JOIN Track
+ON InvoiceLine.TrackId=Track.TrackId
+JOIN Album
+ON Track.AlbumId=Album.AlbumId
+JOIN Artist
+ON Album.ArtistId=Artist.ArtistId
+WHERE Artist.name  like 'Iron Maiden'
+GROUP by Customer.CustomerId
+order by Amountspent DESC, Customer.CustomerId
+LIMIT 5
+—
